@@ -14,9 +14,15 @@
   "author": "Robert Dailey",
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "private": "true"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.5",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "semantic-release": "^19.0.4"
   }
 }
