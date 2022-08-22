@@ -1,0 +1,21 @@
+
+name: Semantics
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build and Publish Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        with:
+          dry_run: true
