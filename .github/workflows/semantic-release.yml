@@ -21,4 +21,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
           GH_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
         with:
-          dry_run: true
+          dry_run: false
