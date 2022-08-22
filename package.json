@@ -1,0 +1,19 @@
+{
+  "name": "test-semantic-release",
+  "version": "1.0.0",
+  "description": "test project for semantic release",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "test",
+    "npm",
+    "semantic-versioning"
+  ],
+  "author": "Robert Dailey",
+  "license": "MIT",
+  "dependencies": {
+    "semantic-release": "^19.0.4"
+  }
+}
