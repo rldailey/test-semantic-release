@@ -8,26 +8,54 @@ on:
   #Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 env:
-  DRYRUN: true
+  DRY_RUN: true
+  REGISTRY: ghcr.io
+  GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
+  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+
+
 
 jobs:
   build:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Analyze Commits
+      - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Semantic Release
+
+      - name: Analyze Commits for Semantic Release
+        id: two
         uses: cycjimmy/semantic-release-action@v3
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
+          GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
+          GH_TOKEN: ${{ env.GHCR_TOKEN }}
         with:
-          dry_run: DRYRUN
-      - name: Get Tag
-        id: vars
-        run: echo "::set-output name=tag::${git describe --tags abbrev=0}"; echo "${{ steps.vars.output.tag }}"; echo "   ++++   "
-      - name: Build and Publish Image
+          dry_run: ${{ env.DRY_RUN }}
+
+      - name: Log Into Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }} 
+          password: ${{ env.GHCR_TOKEN }}
+
+      - name: Sanity Test
         env:
-          BLAH: ${{ steps.vars.output.tag }}
-        run: echo "***** ${{ steps.vars.output.tag }} "
+          TAG: ${{ github.ref_name }}
+        run: |
+          echo "*****"
+          echo $TAG
+          echo "*****"
+      # - name: Build and Publish Image
+      #   uses: docker/build-push-action@v3
+      #   env: 
+      #     #This is dependent on a tag existing on the latest commit in the branch. It will not work otherwise.
+      #     TAG: ${{ github.ref_name }} 
+      #     GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
+      #     GH_TOKEN: ${{ env.GHCR_TOKEN }}
+
+        # with:
+        #   context: .
+        #   push: true
+        #   tags:
+        #   labels:
