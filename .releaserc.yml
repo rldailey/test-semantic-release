@@ -1,7 +1,7 @@
 branches: 
   - main
 repositoryUrl: https://github.com/daileyo/test-semantic-release.git
-preset: conventionalcommits
+#preset: conventionalcommits
 plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
