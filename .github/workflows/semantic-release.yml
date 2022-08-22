@@ -7,13 +7,15 @@ on:
       - main
   #Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+env:
+  DRYRUN: true
+
 jobs:
   build:
-    name: Build and Publish Image
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Analyze Commits
         uses: actions/checkout@v3
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
@@ -21,4 +23,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
           GH_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
         with:
-          dry_run: false
+          dry_run: DRYRUN
+      - name: Get Tag
+        id: vars
+        run: echo "::set-output name=tag::${git describe --tags abbrev=0}"; echo "${{ steps.vars.output.tag }}"; echo "   ++++   "
+      - name: Build and Publish Image
+        env:
+          BLAH: ${{ steps.vars.output.tag }}
+        run: echo "***** ${{ steps.vars.output.tag }} "
