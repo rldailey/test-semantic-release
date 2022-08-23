@@ -8,12 +8,12 @@ on:
   #Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 env:
-  DRY_RUN: true
+  DRY_RUN: false
   REGISTRY: ghcr.io
+  IMAGE_OWNER: daileyo
+  IMAGE_NAME: test-semantic-release
   GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
   SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
-
-
 
 jobs:
   build:
@@ -22,6 +22,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      # Would be nice for workflow, but there appears to be an issue with using this action within a fork
+      # https://github.com/actions/toolkit/issues/465
+      # TODO:  Investigate further
 
       - name: Analyze Commits for Semantic Release
         id: two
@@ -43,19 +47,17 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
         run: |
-          echo "*****"
+          echo "**********"
           echo $TAG
-          echo "*****"
-      # - name: Build and Publish Image
-      #   uses: docker/build-push-action@v3
-      #   env: 
-      #     #This is dependent on a tag existing on the latest commit in the branch. It will not work otherwise.
-      #     TAG: ${{ github.ref_name }} 
-      #     GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
-      #     GH_TOKEN: ${{ env.GHCR_TOKEN }}
+          echo "**********"
 
-        # with:
-        #   context: .
-        #   push: true
-        #   tags:
-        #   labels:
+      - name: Build and Publish Image
+        uses: docker/build-push-action@v3
+        env: 
+          #This is dependent on a tag existing on the latest commit in the branch. It will not work otherwise.
+          TAG: ${{ github.ref_name }}
+        with:
+           context: .
+           push: true
+           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          
