@@ -54,9 +54,9 @@ jobs:
     steps:
       - name: check version info
         env:
-          changed: ${{ needs.rel_ver.outputs.changed }}
-          newVersion: ${{ needs.rel_ver.outputs.newVersion }}
-          previousVersion: ${{ needs.rel_ver.outputs.previousVersion }}
+          changed: ${{ needs.release.outputs.changed }}
+          newVersion: ${{ needs.release.outputs.newVersion }}
+          previousVersion: ${{ needs.release.outputs.previousVersion }}
         run: |
           echo "*********************************************"
           echo "changed: $changed"
