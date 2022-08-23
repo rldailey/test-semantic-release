@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 env:
   GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
-  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_SEMANTIC_VERSION_TOKEN }}
+  GH_SEMANTIC_VERSION_TOKEN: ${{ secrets.GH_SEMANTIC_VERSION_TOKEN }}
 
 concurrency:
   group: release
@@ -40,9 +40,22 @@ jobs:
         run: |
           npm install --location=global yarn
 
-      - name: Release Pakage
-        id: rel_package
+      - name: Release
+        id: release
         uses: liatrio/github-actions/conventional-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_VERSION_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_SEMANTIC_VERSION_TOKEN }}
+          GITHUB_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
+          GH_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
+      - name: Test outputs
+        run: |
+          echo "changed: $changed"
+          echo "previousVersion:  $previousVersion"
+          echo "newVersion: $newVersion"
+
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    if: needs.release.outputs.changed == 'true'
+    steps:
+      - name: blah
+        run: echo "blah"
