@@ -59,8 +59,9 @@ jobs:
     steps:
       - name: blah
         env:
-          changed: needs.release.outputs.changed
+          changed: ${{ needs.release.outputs.changed }}
           newVersion: ${{ needs.release.outputs.newVersion }}
+          previousVersion: ${{ needs.release.outputs.previousVersion }}
         run: |
           echo "*********************************************"
           echo "changed: $changed"
