@@ -8,19 +8,18 @@ on:
   workflow_dispatch:
 env:
   GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
-  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }}
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-    # - uses: actions/checkout@v2
-    # - name: semantic release
-    #   run: npx semantic-release
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+    - name: Install Yarn
+      run: npm install -g yarn
+    - name: Checkout Code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: wrapper check
       uses: liatrio/github-actions/conventional-release@master
-      with:
-        token: ${{ env.SEMANTIC_RELEASE_TOKEN }}
-    - name: test
-      run: echo "grr"
+      env:
+        GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
