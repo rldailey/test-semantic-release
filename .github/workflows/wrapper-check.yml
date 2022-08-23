@@ -37,6 +37,6 @@ jobs:
           fetch-depth: 0
       - name: Release Pakage
         id: rel_package
-        uses: liatrio/github-action/conventionl-release@master
+        uses: liatrio/github-actions/conventional-release@master
         env:
           GITHUB_TOKEN: $ {{ env.SEMANTIC_RELEASE_TOKEN }}
