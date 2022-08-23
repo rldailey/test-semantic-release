@@ -20,6 +20,8 @@ env:
   GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
   SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }}
 
+concurrency:
+  group: release
 
 jobs:
   release:
