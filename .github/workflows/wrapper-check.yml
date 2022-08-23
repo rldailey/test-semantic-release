@@ -9,29 +9,32 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'modules/**'
+      - 'stacks/**'
+      - 'stages/**'
+      - '.releaserc.yaml'
+      - '.github/workflows/release.yml'  
   workflow_dispatch:
 env:
   GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
   SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }}
+
+
 jobs:
-  validate:
+  release:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.release.outputs.changed }}
+      previousVersion: ${{ steps.release.outputs.changed }}
+      newVersion: ${{ steps.release.outputs.changed }}
     steps:
-    - name: Install Yarn
-      run: npm install -g yarn
-    - name: Checkout Code
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: wrapper check
-      #id: sem_ver
-      uses: liatrio/github-actions/conventional-release@master
-      env:
-        GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
-    
-    - name: check version
-      env:
-        NEW: ${{ steps.validate.outputs.releaseVersion }}
-      run: | 
-        echo "RELEASE VERSION: $RELEASE_VERSION"
-        echo "TAG : $NEW"
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Release Pakage
+        id: rel_package
+        uses: liatrio/github-action/conventionl-release@master
+        env:
+          GITHUB_TOKEN: $ {{ env.SEMANTIC_RELEASE_TOKEN }}
