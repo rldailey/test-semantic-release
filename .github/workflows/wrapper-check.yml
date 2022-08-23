@@ -41,7 +41,7 @@ jobs:
           npm install --location=global yarn
 
       - name: Release
-        id: rel_ver
+        id: release
         uses: liatrio/github-actions/conventional-release@master
         env:
           GITHUB_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
