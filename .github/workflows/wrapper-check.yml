@@ -14,11 +14,11 @@ on:
       - 'stacks/**'
       - 'stages/**'
       - '.releaserc.yaml'
-      - '.github/workflows/release.yml'  
+      - '.github/workflows/wrapper-check.yml'  
   workflow_dispatch:
 env:
   GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
-  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_SEMANTIC_VERSION_TOKEN }}
 
 concurrency:
   group: release
@@ -44,5 +44,5 @@ jobs:
         id: rel_package
         uses: liatrio/github-actions/conventional-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_SEMANTIC_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_VERSION_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_SEMANTIC_VERSION_TOKEN }}
