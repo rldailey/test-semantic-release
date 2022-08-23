@@ -1,6 +1,6 @@
-branches: 
+branches:
   - main
-repositoryUrl: https://github.com/daileyo/test-semantic-release.git
+repositoryUrl: 'git@github.com/daileyo/test-semanti-release.git'
 preset: conventionalcommits
 plugins:
   - '@semantic-release/commit-analyzer'
