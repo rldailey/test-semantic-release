@@ -50,12 +50,12 @@ jobs:
         env:
           a: ${{ steps.release.outputs.changed }}
           b: ${{ steps.release.outputs.previousVersion }}
-          c: ${{ steps.release.outputs.nextVersion }}
+          c: ${{ steps.release.outputs.newVersion }}
         run: |
           echo "++++++++++++++++++++++++++"
-          echo "change: $a"
+          echo "change:   $a"
           echo "previous: $b"
-          echo "next: $c"
+          echo "next:     $c"
           echo "++++++++++++++++++++++++++"
 
   publish:
