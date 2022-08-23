@@ -39,7 +39,18 @@ jobs:
         run: echo "!!!!!!!!!! No relese generated.  Image publish will be skipped. !!!!!!!!!!"
 
  
-
+      - name: Check result
+        #if: ${{ env.DRY_RUN == 'false' }}
+        #if: ${{ version.steps.sem_rel.outputs.release-version }} != null
+        env:
+          TAG:  ${{ steps.sem_rel.outputs.release-version }}
+          REFERENCE: ${{ github.ref_name }}
+        run: |
+          echo "****************************************"
+          echo "TAG:        $TAG"
+          echo "REFERENCE:  $REFERENCE"
+          echo "Full Ref:   $GITHUB_REF"
+          echo "****************************************"
   
   publish:
     
