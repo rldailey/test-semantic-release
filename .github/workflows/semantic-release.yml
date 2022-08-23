@@ -46,15 +46,18 @@ jobs:
       - name: Sanity Test
         env:
           TAG: ${{ github.ref_name }}
+          TYPE: ${{ github.ref_type }}
         run: |
           echo "**********"
-          echo $TAG
+          echo TYPE:  $TYPE
+          echo TAGE:  $TAG
           echo "**********"
 
       - name: Build and Publish Image
         uses: docker/build-push-action@v3
         env: 
           #This is dependent on a tag existing on the latest commit in the branch. It will not work otherwise.
+          #https://github.com/orgs/community/discussions/26686#discussioncomment-3396593
           TAG: ${{ github.ref_name }}
         with:
            context: .
