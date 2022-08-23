@@ -3,7 +3,7 @@
 #  https://github.com/liatrio/product-operator/blob/main/.github/workflows/post-release.yaml
 #  https://github.com/liatrio/lead-terraform/blob/master/.github/workflows/release.yml
 
-name: Semantic Release
+name: Wrapper Test
 
 on:
   push:
