@@ -24,7 +24,7 @@ concurrency:
   group: release
 
 jobs:
-  release:
+  release-me:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.release.outputs.changed }}
@@ -48,9 +48,9 @@ jobs:
           GH_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
 
   publish:
-    needs: release
+    needs: release-me
     runs-on: ubuntu-latest
-    if: needs.rel_ver.outputs.changed == 'true'
+    if: needs.release.outputs.changed == 'true'
     steps:
       - name: check version info
         env:
