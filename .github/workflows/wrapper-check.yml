@@ -1,0 +1,24 @@
+
+name: Semantic Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    # - uses: actions/checkout@v2
+    # - name: semantic release
+    #   run: npx semantic-release
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+    - name: wrapper check
+      uses: liatrio/github-actions/conventional-release@master
+      with:
+        token: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+    - name: test
+      run: echo "grr"
