@@ -46,7 +46,7 @@ jobs:
     name: Publish Image
     runs-on: ubuntu-latest
     needs: version
-    #if: ${{ needs.env.DRY_RUN == 'false' }}
+    if: ${{ needs.env.DRY_RUN == 'false' }}
     steps:
 
       - name: Check result
