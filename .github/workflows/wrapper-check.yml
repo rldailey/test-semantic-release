@@ -44,4 +44,5 @@ jobs:
         id: rel_package
         uses: liatrio/github-actions/conventional-release@master
         env:
-          GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_SEMANTIC_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_SEMANTIC_TOKEN }}
