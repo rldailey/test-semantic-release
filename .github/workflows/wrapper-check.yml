@@ -6,7 +6,9 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+env:
+  GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
+  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -19,6 +21,6 @@ jobs:
     - name: wrapper check
       uses: liatrio/github-actions/conventional-release@master
       with:
-        token: ${{ secrets.GH_SEMANTIC_RELEASE_TOKEN }}
+        token: ${{ env.SEMANTIC_RELEASE_TOKEN }}
     - name: test
       run: echo "grr"
