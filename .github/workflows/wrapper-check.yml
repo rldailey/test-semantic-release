@@ -1,4 +1,8 @@
 
+#  REFERENCES
+#  https://github.com/liatrio/product-operator/blob/main/.github/workflows/post-release.yaml
+#  https://github.com/liatrio/lead-terraform/blob/master/.github/workflows/release.yml
+
 name: Semantic Release
 
 on:
@@ -20,13 +24,14 @@ jobs:
       with:
         fetch-depth: 0
     - name: wrapper check
-      id: sem_ver
+      #id: sem_ver
       uses: liatrio/github-actions/conventional-release@master
       env:
         GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
     
     - name: check version
       env:
-        TAG: ${{ steps.sem_ver.outputs.release-version }}
+        NEW: ${{ steps.validate.outputs.releaseVersion }}
       run: | 
         echo "RELEASE VERSION: $RELEASE_VERSION"
+        echo "TAG : $NEW"
