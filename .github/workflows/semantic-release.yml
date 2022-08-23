@@ -52,7 +52,7 @@ jobs:
 
 
       - name: Log Into Registry
-        if: ${{ env.DRY_RUN == 'false' || steps.sem_rel.outputs.release-version }}  
+        if: ${{ env.DRY_RUN == 'false' && steps.sem_rel.outputs.release-version != null }}  
         uses: docker/login-action@v2
         with: 
           registry: ${{ env.REGISTRY }}
@@ -61,7 +61,7 @@ jobs:
 
 
       - name: Build and Publish Image
-        if: ${{ env.DRY_RUN == 'false' || steps.sem_rel.outputs.release-version }}  
+        if: ${{ env.DRY_RUN == 'false' && steps.sem_rel.outputs.release-version != null }}  
         uses: docker/build-push-action@v3
         env: 
           #This is dependent on a tag existing on the latest commit in the branch. It will not work otherwise.
