@@ -51,6 +51,7 @@ jobs:
           echo "**********"
           echo TYPE:  $TYPE
           echo TAGE:  $TAG
+          echo "++++++++++"
           echo "**********"
 
       - name: Build and Publish Image
