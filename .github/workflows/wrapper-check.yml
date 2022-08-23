@@ -20,6 +20,13 @@ jobs:
       with:
         fetch-depth: 0
     - name: wrapper check
+      id: sem_ver
       uses: liatrio/github-actions/conventional-release@master
       env:
         GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
+    
+    - name: check version
+      env:
+        TAG: ${{ steps.sem_ver.outputs.release-version }}
+      run: | 
+        echo "RELEASE VERSION: $RELEASE_VERSION"
