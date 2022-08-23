@@ -28,8 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.release.outputs.changed }}
-      previousVersion: ${{ steps.release.outputs.changed }}
-      newVersion: ${{ steps.release.outputs.changed }}
+      previousVersion: ${{ steps.release.outputs.previousVersion }}
+      newVersion: ${{ steps.release.outputs.newVersion }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -46,11 +46,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
           GH_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
+          c: ${{ steps.release.outputs.changed }}
+          pv: ${{ steps.release.outputs.previousVersion }}
+          nv: ${{ steps.release.outputs.newVersion }}
       - name: Test outputs
         run: |
-          echo "changed: $changed"
-          echo "previousVersion:  $previousVersion"
-          echo "newVersion: $newVersion"
+          echo "changed: $c"
+          echo "previousVersion:  $pv"
+          echo "newVersion: $nv"
 
   publish:
     needs: release
