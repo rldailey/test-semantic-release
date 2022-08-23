@@ -38,6 +38,17 @@ jobs:
         if: ${{ steps.sem_rel.outputs.release-version }} == null
         run: echo "!!!!!!!!!! No relese generated.  Image publish will be skipped. !!!!!!!!!!"
 
+ 
+
+  
+  publish:
+    
+    name: Publish Image
+    runs-on: ubuntu-latest
+    needs: version
+    #if: ${{ needs.env.DRY_RUN == 'false' }}
+    steps:
+
       - name: Check result
         #if: ${{ version.steps.sem_rel.outputs.release-version }} != null
         env:
@@ -49,15 +60,6 @@ jobs:
           echo "REFERENCE:  $REFERENCE"
           echo "Full Ref:   $GITHUB_REF"
           echo "****************************************"
-
-  
-  publish:
-    if: ${{ env.DRY_RUN == 'false' }}
-    name: Publish Image
-    runs-on: ubuntu-latest
-    needs: version
-    
-    steps:
 
       - name: Log Into Registry
        # if: ${{ env.DRY_RUN == 'false' && .sem_rel.outputs.release-version != null }}  
