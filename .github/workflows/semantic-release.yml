@@ -8,8 +8,9 @@ on:
   #Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 env:
-  DRY_RUN: false
+  DRY_RUN: true
   REGISTRY: ghcr.io
+  #TODO:  Set owner and name via github context and expansion
   IMAGE_OWNER: daileyo
   IMAGE_NAME: test-semantic-release
   GHCR_TOKEN: ${{ secrets.GHCR_DAILEYO_TOKEN }}
@@ -23,12 +24,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Would be nice for workflow, but there appears to be an issue with using this action within a fork
-      # https://github.com/actions/toolkit/issues/465
-      # TODO:  Investigate further
-
       - name: Analyze Commits for Semantic Release
-        id: two
+        id: sem_rel
         uses: cycjimmy/semantic-release-action@v3
         env:
           GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
@@ -36,25 +33,35 @@ jobs:
         with:
           dry_run: ${{ env.DRY_RUN }}
 
+
+      - name: Check for Release
+        if: ${{ steps.sem_rel.outputs.release-version }} == null
+        run: echo "!!!!!!!!!! No relese generated.  Image publish will be skipped. !!!!!!!!!!"
+
+      - name: Check result
+        if: ${{ steps.sem_rel.outputs.release-version }} != null
+        env:
+          TAG:  ${{ steps.sem_rel.outputs.release-version }}
+          REFERENCE: ${{ github.ref_name }}
+        run: |
+          echo "****************************************"
+          echo "TAG:        $TAG"
+          echo "REFERENCE:  $REFERENCE"
+          echo "Full Ref:   $GITHUB_REF"
+          echo "****************************************"
+
+
       - name: Log Into Registry
+        if: ${{ env.DRY_RUN == 'false' || steps.sem_rel.outputs.release-version }}  
         uses: docker/login-action@v2
-        with:
+        with: 
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }} 
           password: ${{ env.GHCR_TOKEN }}
 
-      - name: Sanity Test
-        env:
-          TAG: ${{ github.ref_name }}
-          TYPE: ${{ github.ref_type }}
-        run: |
-          echo "**********"
-          echo TYPE:  $TYPE
-          echo TAGE:  $TAG
-          echo "++++++++++"
-          echo "**********"
 
       - name: Build and Publish Image
+        if: ${{ env.DRY_RUN == 'false' || steps.sem_rel.outputs.release-version }}  
         uses: docker/build-push-action@v3
         env: 
           #This is dependent on a tag existing on the latest commit in the branch. It will not work otherwise.
