@@ -41,30 +41,22 @@ jobs:
           npm install --location=global yarn
 
       - name: Release
-        id: release
+        id: rel_ver
         uses: liatrio/github-actions/conventional-release@master
         env:
           GITHUB_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
           GH_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
-          c: ${{ release.steps.release.outputs.changed }}
-          pv: ${{ release.steps.release.outputs.previousVersion }}
-          nv: ${{ release.steps.release.outputs.newVersion }}
-      - name: Test outputs
-        run: |
-          echo "changed: $c"
-          echo "previousVersion:  $pv"
-          echo "newVersion: $nv"
 
   publish:
     needs: release
     runs-on: ubuntu-latest
-    if: needs.release.outputs.changed == 'true'
+    if: needs.rel_ver.outputs.changed == 'true'
     steps:
-      - name: blah
+      - name: check version info
         env:
-          changed: ${{ needs.release.outputs.changed }}
-          newVersion: ${{ needs.release.outputs.newVersion }}
-          previousVersion: ${{ needs.release.outputs.previousVersion }}
+          changed: ${{ needs.rel_ver.outputs.changed }}
+          newVersion: ${{ needs.rel_ver.outputs.newVersion }}
+          previousVersion: ${{ needs.rel_ver.outputs.previousVersion }}
         run: |
           echo "*********************************************"
           echo "changed: $changed"
