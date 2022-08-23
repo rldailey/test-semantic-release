@@ -58,4 +58,12 @@ jobs:
     if: needs.release.outputs.changed == 'true'
     steps:
       - name: blah
-        run: echo "blah"
+        env:
+          changed: needs.release.outputs.changed
+          newVersion: ${{ needs.release.outputs.newVersion }}
+        run: |
+          echo "*********************************************"
+          echo "changed: $changed"
+          echo "previousVersion:  $previousVersion"
+          echo "newVersion: $newVersion"
+          echo "*********************************************"
