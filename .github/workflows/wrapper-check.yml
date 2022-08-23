@@ -46,9 +46,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
           GH_TOKEN: ${{ env.GH_SEMANTIC_VERSION_TOKEN }}
-          c: ${{ steps.release.outputs.changed }}
-          pv: ${{ steps.release.outputs.previousVersion }}
-          nv: ${{ steps.release.outputs.newVersion }}
+          c: ${{ release.steps.release.outputs.changed }}
+          pv: ${{ release.steps.release.outputs.previousVersion }}
+          nv: ${{ release.steps.release.outputs.newVersion }}
       - name: Test outputs
         run: |
           echo "changed: $c"
