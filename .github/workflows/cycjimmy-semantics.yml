@@ -66,21 +66,17 @@ jobs:
     needs: cycjimmy-release
     if: ${{ needs.cycjimmy_release.outputs.new_release_published }} == true
     steps:
-
-      - name: Check result
-        #if: ${{ env.DRY_RUN == 'false' }}
-        #if: ${{ version.steps.cycjimmy_release.outputs.release-version }} != null
+      - name: check version info
         env:
-          TAG:  ${{ env.GRR_TAG }}
-          
-          REFERENCE: ${{ github.ref_name }}
+          changed: ${{ needs.cycjimmy-release.outputs.new_release_published }}
+          newVersion: ${{ needs.cycjimmy-release.outputs.new_release_version }}
+          previousVersion: ${{ needs.cycjimmy-release.outputs.last_release_version }}
         run: |
-          echo "****************************************"
-          echo "TAG:        $TAG"
-          
-          echo "REFERENCE:  $REFERENCE"
-          echo "Full Ref:   $GITHUB_REF"
-          echo "****************************************"
+          echo "*********************************************"
+          echo "changed: $changed"
+          echo "previousVersion:  $previousVersion"
+          echo "newVersion: $newVersion"
+          echo "*********************************************"
 
   #     - name: Log Into Registry
   #       if: ${{ env.DRY_RUN == 'false' }}
