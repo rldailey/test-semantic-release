@@ -49,7 +49,7 @@ jobs:
           c: ${{ steps.cycjimmy_release.outputs.new_release_version }}
         run: |
           echo "++++++++++++++++++++++++++"
-          echo "change:   $a"
+          echo "changed:  $a"
           echo "previous: $b"
           echo "next:     $c"
           echo "++++++++++++++++++++++++++"
