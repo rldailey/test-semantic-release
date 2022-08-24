@@ -58,13 +58,13 @@ jobs:
     needs: release-please
     name: Publish Image
     runs-on: ubuntu-latest
-    if: needs.release-please.outputs.new_release_published == true
+    if: needs.release-please.outputs.changed == true
     steps:
       - name: check version info
         env:
-          changed:          ${{ needs.release-please.outputs.new_release_published }}
-          newVersion:       ${{ needs.release-please.outputs.new_release_version }}
-          previousVersion:  ${{ needs.release-please.outputs.last_release_version }}
+          changed:          ${{ needs.release-please.outputs.changed }}
+          newVersion:       ${{ needs.release-please.outputs.newVersion }}
+          previousVersion:  ${{ needs.release-please.outputs.previousVersion }}
         run: |
           echo "*********************************************"
           echo "changed: $changed"
