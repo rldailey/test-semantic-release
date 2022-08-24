@@ -67,11 +67,14 @@ jobs:
           changed:          ${{ needs.release-please.outputs.changed }}
           newVersion:       ${{ needs.release-please.outputs.newVersion }}
           previousVersion:  ${{ needs.release-please.outputs.previousVersion }}
+          imageName:        ${{ ${github.repository#/*} }}
+          owner:            ${{ ${github.repository%*/} }}
         run: |
           echo "*********************************************"
           echo "changed:    $changed"
           echo "previous:   $previousVersion"
           echo "newVersion: $newVersion"
+          echo "owner":     ${{  }}
           echo "*********************************************"
 
       - name: Log Into Registry
