@@ -77,8 +77,8 @@ jobs:
           echo "changed:    $changed"
           echo "previous:   $previousVersion"
           echo "newVersion: $newVersion"
-          echo "owner:      ${ghRepository%*/}"
-          echo "imageName:  ${ghRepository#/*}"
+          echo "owner:      $ghRepository"
+          echo "imageName:  ${GITHUB_REPOSITORY#*/}"
           echo "*********************************************"
 
       - name: Log Into Registry
