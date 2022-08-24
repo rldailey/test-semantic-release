@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 env:
   REGISTRY: ghcr.io
+  REPOSITORY: ${{ github.repository }}
   GHCR_TOKEN: ${{ secrets.GH_FULL_TOKEN }}
   SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }
 
@@ -86,5 +87,5 @@ jobs:
         with:
            context: .
            push: true
-           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${GITHUB_REPOSITORY}:v${{ needs.release-please.outputs.newVersion }}
+           tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:latest, ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:v${{ needs.release-please.outputs.newVersion }}
           
