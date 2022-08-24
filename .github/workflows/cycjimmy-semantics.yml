@@ -58,7 +58,7 @@ jobs:
     needs: release-please
     name: Publish Image
     runs-on: ubuntu-latest
-    if: needs.release-please.outputs.changed == true
+    if: needs.release-please.outputs.changed == 'true'
     steps:
       - name: check version info
         env:
