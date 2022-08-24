@@ -47,15 +47,15 @@ jobs:
           a: ${{ steps.cycjimmy_release.outputs.new_release_published }}
           b: ${{ steps.cycjimmy_release.outputs.last_release_version }}
           c: ${{ steps.cycjimmy_release.outputs.new_release_version }}
-          imageName:        ${{ ${github.repository#/*} }}
-          owner:            ${{ ${github.repository%*/} }}
+          imageName:        ${{ gitub.repository }}
+          owner:            ${{ github.repository }}
         run: |
           echo "++++++++++++++++++++++++++"
           echo "changed:  $a"
           echo "previous: $b"
           echo "next:     $c"
           echo "owner:      $owner"
-          echo "imageName:  $imageName"
+          echo "imageName:  ${GITHUB_REPOSITORY#*/}"
           echo "++++++++++++++++++++++++++"
   
   publish:
