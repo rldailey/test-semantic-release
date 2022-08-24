@@ -67,9 +67,9 @@ jobs:
           previousVersion:  ${{ needs.release-please.outputs.previousVersion }}
         run: |
           echo "*********************************************"
-          echo "changed:          $changed"
-          echo "previousVersion:  $previousVersion"
-          echo "newVersion:       $newVersion"
+          echo "changed:    $changed"
+          echo "previous:   $previousVersion"
+          echo "newVersion: $newVersion"
           echo "*********************************************"
 
       - name: Log Into Registry
