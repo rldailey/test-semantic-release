@@ -82,10 +82,8 @@ jobs:
 
       - name: Build and Publish Image
         uses: docker/build-push-action@v3
-        env: 
-          TAG: newVersion
         with:
            context: .
            push: true
-           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:$TAG
+           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:${{ needs.release-please.outputs.newVersion }}
           
