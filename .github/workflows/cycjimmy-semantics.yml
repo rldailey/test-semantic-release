@@ -74,7 +74,8 @@ jobs:
           echo "changed:    $changed"
           echo "previous:   $previousVersion"
           echo "newVersion: $newVersion"
-          echo "owner":     ${{  }}
+          echo "owner:      $owner"
+          echo "imageName:  $imageName"
           echo "*********************************************"
 
       - name: Log Into Registry
