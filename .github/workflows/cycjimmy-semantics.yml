@@ -1,0 +1,121 @@
+
+# REFERENCE
+# https://github.com/marketplace/actions/action-for-semantic-release
+
+name: cycjimmy Semantics
+
+on:
+  push:
+    branches:
+      - main
+  #Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+env:
+  DRY_RUN: false
+  REGISTRY: ghcr.io
+  #TODO:  Set owner and name via github context and expansion
+  IMAGE_OWNER: daileyo
+  IMAGE_NAME: test-semantic-release
+  GHCR_TOKEN: ${{ secrets.GH_FULL_TOKEN }}
+  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }
+
+jobs:
+  version:
+    name: Check & Version
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.cycjimmy.outputs.new_release_published }}
+      previousVersion: ${{ steps.cycjimmy.outputs.last_release_version }}
+      newVersion: ${{ steps.cycjimmy.outputs.new_release_version }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        env:
+          GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
+
+      - name: unique requirements
+        run: |
+          npm install --save-dev conventional-changelog-conventionalcommits
+      - name: Analyze Commits for Semantic Release
+        id: cycjimmy_release
+        uses: cycjimmy/semantic-release-action@v3
+        env:
+          GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
+          GH_TOKEN: ${{ env.GHCR_TOKEN }}
+          
+      - name: another test
+        env:
+          a: ${{ steps.release.outputs.new_release_published }}
+          b: ${{ steps.release.outputs.last_release_version }}
+          c: ${{ steps.release.outputs.new_release_version }}
+        run: |
+          echo "++++++++++++++++++++++++++"
+          echo "change:   $a"
+          echo "previous: $b"
+          echo "next:     $c"
+          echo "++++++++++++++++++++++++++"
+
+ 
+ 
+      - name: Get version manually
+        run: echo ::set-env name=GRR_TAG::$(git describe --tags --abbrev=0)
+      - name: Check result
+        #if: ${{ env.DRY_RUN == 'false' }}
+        #if: ${{ version.steps.sem_rel.outputs.nrelease-version }} != null
+        env:
+          TAG:  ${{ env.GRR_TAG }}
+          REFERENCE: ${{ github.ref_name }}
+          NEWVER: ${{ steps.sem_rel.outputs.new_release_version }}
+        run: |
+          echo "****************************************"
+          echo "TAG:        $TAG"
+          echo "NEWVER: $NEWVER"
+          echo "REFERENCE:  $REFERENCE"
+          echo "Full Ref:   $GITHUB_REF"
+          echo "****************************************"
+  
+  publish:
+    
+    name: Publish Image
+    runs-on: ubuntu-latest
+    needs: version
+    # if: ${{ env.DRY_RUN == 'false' }}
+    steps:
+
+      - name: Check result
+        #if: ${{ env.DRY_RUN == 'false' }}
+        #if: ${{ version.steps.sem_rel.outputs.release-version }} != null
+        env:
+          TAG:  ${{ env.GRR_TAG }}
+          
+          REFERENCE: ${{ github.ref_name }}
+        run: |
+          echo "****************************************"
+          echo "TAG:        $TAG"
+          
+          echo "REFERENCE:  $REFERENCE"
+          echo "Full Ref:   $GITHUB_REF"
+          echo "****************************************"
+
+  #     - name: Log Into Registry
+  #       if: ${{ env.DRY_RUN == 'false' }}
+  #      # if: ${{ env.DRY_RUN == 'false' && .sem_rel.outputs.release-version != null }}  
+  #       uses: docker/login-action@v2
+  #       with: 
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }} 
+  #         password: ${{ env.GHCR_TOKEN }}
+
+
+  #     - name: Build and Publish Image
+  #       if: ${{ env.DRY_RUN == 'false' }}
+  #       uses: docker/build-push-action@v3
+  #       env: 
+  #         #This is dependent on a tag existing on the latest commit in the branch. It will not work otherwise.
+  #         #https://github.com/orgs/community/discussions/26686#discussioncomment-3396593
+  #         TAG: ${{ github.ref_name }}
+  #       with:
+  #          context: .
+  #          push: true
+  #          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          
