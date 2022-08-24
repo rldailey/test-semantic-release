@@ -5,6 +5,5 @@ preset: conventionalcommits
 plugins:
   - '@semantic-release/commit-analyzer'
   - '@semantic-release/release-notes-generator'
-  - path: '@semantic-release/github'
-    failComment: false
-    successComment: false
+  - '@semantic-release/git'
+  - '@semantic-release/github'
