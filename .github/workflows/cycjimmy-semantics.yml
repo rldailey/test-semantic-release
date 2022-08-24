@@ -60,6 +60,8 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.release-please.outputs.changed == 'true'
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
       - name: check version info
         env:
           changed:          ${{ needs.release-please.outputs.changed }}
@@ -83,7 +85,7 @@ jobs:
       - name: Build and Publish Image
         uses: docker/build-push-action@v3
         with:
-           context: ./
+           context: .
            push: true
            tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:${{ needs.release-please.outputs.newVersion }}
           
