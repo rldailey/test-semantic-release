@@ -86,5 +86,5 @@ jobs:
         with:
            context: .
            push: true
-           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${GITHUB_REPOSITORY}:${{ needs.release-please.outputs.newVersion }}
+           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/${{ env.IMAGE_NAME }}:latest, ${{ env.REGISTRY }}/${GITHUB_REPOSITORY}:v${{ needs.release-please.outputs.newVersion }}
           
