@@ -20,7 +20,7 @@ env:
   SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }
 
 jobs:
-  cycjimmy-release:
+  release-please:
     name: Check & Version
     runs-on: ubuntu-latest
     outputs:
@@ -57,14 +57,14 @@ jobs:
   publish:
     name: Publish Image
     runs-on: ubuntu-latest
-    needs: cycjimmy-release
-    if: needs.cycjimmy-release.outputs.new_release_published == true
+    needs: release-please
+    if: needs.release-please.outputs.new_release_published == true
     steps:
       - name: check version info
         env:
-          changed:          ${{ needs.cycjimmy-release.outputs.new_release_published }}
-          newVersion:       ${{ needs.cycjimmy-release.outputs.new_release_version }}
-          previousVersion:  ${{ needs.cycjimmy-release.outputs.last_release_version }}
+          changed:          ${{ needs.release-please.outputs.new_release_published }}
+          newVersion:       ${{ needs.release-please.outputs.new_release_version }}
+          previousVersion:  ${{ needs.release-please.outputs.last_release_version }}
         run: |
           echo "*********************************************"
           echo "changed: $changed"
