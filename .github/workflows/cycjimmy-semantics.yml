@@ -68,9 +68,9 @@ jobs:
     steps:
       - name: check version info
         env:
-          changed: ${{ needs.cycjimmy-release.outputs.new_release_published }}
-          newVersion: ${{ needs.cycjimmy-release.outputs.new_release_version }}
-          previousVersion: ${{ needs.cycjimmy-release.outputs.last_release_version }}
+          changed: ${{ needs.cycjimmy_release.outputs.new_release_published }}
+          newVersion: ${{ needs.cycjimmy_release.outputs.new_release_version }}
+          previousVersion: ${{ needs.cycjimmy_release.outputs.last_release_version }}
         run: |
           echo "*********************************************"
           echo "changed: $changed"
