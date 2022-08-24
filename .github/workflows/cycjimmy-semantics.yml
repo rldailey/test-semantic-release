@@ -30,12 +30,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-        env:
-          GITHUB_TOKEN: ${{ env.SEMANTIC_RELEASE_TOKEN }}
 
       - name: unique requirements
         run: |
           npm install --save-dev conventional-changelog-conventionalcommits
+          
       - name: Analyze Commits for Semantic Release
         id: cycjimmy_release
         uses: cycjimmy/semantic-release-action@v3
@@ -54,11 +53,6 @@ jobs:
           echo "previous: $b"
           echo "next:     $c"
           echo "++++++++++++++++++++++++++"
-
- 
- 
-      - name: Get version manually
-        run: echo ::set-env name=GRR_TAG::$(git describe --tags --abbrev=0)
   
   publish:
     name: Publish Image
