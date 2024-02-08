@@ -14,7 +14,7 @@ env:
   REGISTRY: ghcr.io
   REPOSITORY: ${{ github.repository }}
   GHCR_TOKEN: ${{ secrets.GH_FULL_TOKEN }}
-  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }
+  SEMANTIC_RELEASE_TOKEN: ${{ secrets.GH_FULL_TOKEN }}
 
 jobs:
   release-please:
